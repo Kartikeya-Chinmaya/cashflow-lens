@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ledger theme — dark variant. Single source of truth for palette/type
+   tokens used outside Tailwind utility classes (Recharts strokes, inline
+   styles). Component code never hardcodes these values. */
+:root {
+  --color-ink: #ede8db;
+  --color-paper: #0a0a09;
+  --color-ruled: #4c4839;
+  --color-stamp: #57a374;
+  --color-caution: #d9a544;
+  --color-oxide: #db5b4c;
+  --color-ruled-faint: rgba(237, 232, 219, 0.07);
+
+  --color-stamp-wash: rgba(87, 163, 116, 0.16);
+  --color-caution-wash: rgba(217, 165, 68, 0.16);
+  --color-oxide-wash: rgba(219, 91, 76, 0.16);
+
+  --font-serif: "Source Serif 4", Georgia, serif;
+  --font-sans: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+}
+
+/* Faint paper grain — a physical page has tooth, a UI background doesn't.
+   Tiny SVG turbulence tiled at low opacity, applied once at the page root. */
+.paper-grain {
+  position: relative;
+}
+.paper-grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* Horizontal ledger rules running the full page, like ruled account paper. */
+.ledger-ruled {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 2.24rem,
+    var(--color-ruled-faint) 2.24rem,
+    var(--color-ruled-faint) calc(2.24rem + 1px)
+  );
+  background-attachment: local;
+}
+
+/* The red marginal rule found on physical ledger/account paper, a fixed
+   distance in from the bound edge, separating the writing area from the
+   annotation margin. */
+.ledger-margin-rule {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 2.75rem;
+  width: 1px;
+  background: var(--color-oxide);
+  opacity: 0.3;
+}
+
+.rule-double {
+  border-bottom: 1px solid var(--color-ink);
+  box-shadow: 0 3px 0 -1px var(--color-ink);
+}
+
+.leader {
+  flex: 1;
+  border-bottom: 1px dotted var(--color-ruled);
+  margin: 0 0.5rem;
+  transform: translateY(-0.3rem);
+}

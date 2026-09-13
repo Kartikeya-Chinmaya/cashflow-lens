@@ -1,0 +1,6 @@
+.env
+__pycache__/
+*.pyc
+cashflow_lens.db
+venv/
+.venv/
