@@ -57,7 +57,7 @@ function LegendSwatch({ dashed, label }) {
   );
 }
 
-function ChartTooltip({ active, payload, label }) {
+function ChartTooltip({ active, payload, label, currencySymbol }) {
   if (!active || !payload || !payload.length) return null;
   // Net cash flow first, baseline second — matches the legend order above
   // the chart, regardless of the order Recharts hands us.
@@ -67,7 +67,7 @@ function ChartTooltip({ active, payload, label }) {
       <div className="font-mono text-xs text-neutral-500 mb-1">{label}</div>
       {ordered.map((entry) => (
         <div key={entry.dataKey} className="font-mono text-[13px] text-white">
-          {`₹${Math.round(entry.value).toLocaleString()} (${entry.name})`}
+          {`${currencySymbol}${Math.round(entry.value).toLocaleString()} (${entry.name})`}
         </div>
       ))}
     </div>
@@ -84,7 +84,7 @@ function LatestDot({ cx, cy, index, dataLength, color }) {
   );
 }
 
-export default function CashFlowChart({ months, flaggedShape }) {
+export default function CashFlowChart({ months, flaggedShape, currencySymbol = "₹" }) {
   const data = months.map((m) => ({
     month: `${monthLabel(m)} ${m.year_index === 0 ? "Y1" : "Y2"}`,
     net_flow: m.net_flow,
@@ -134,7 +134,7 @@ export default function CashFlowChart({ months, flaggedShape }) {
               axisLine={{ stroke: "#27272a" }}
               tickLine={{ stroke: "#27272a" }}
             />
-            <Tooltip content={<ChartTooltip />} />
+            <Tooltip content={<ChartTooltip currencySymbol={currencySymbol} />} />
             {flaggedRanges.map(([s, e], idx) => (
               <ReferenceArea
                 key={idx}

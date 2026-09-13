@@ -58,7 +58,8 @@ export default function BorrowerDetail() {
   }
 
   const { id: borrowerId, name, archetype, months, score_breakdown, recommendation, ai_explanation, current_installment } = detail;
-  const latest = months[months.length - 1];
+  const latest = months.findLast((m) => !m.provisional) || months[months.length - 1];
+  const forecastMonths = months.filter((m) => m.provisional);
   const isHighRisk = score_breakdown.bucket === "High";
 
   return (
@@ -80,7 +81,7 @@ export default function BorrowerDetail() {
         <div className="flex flex-col gap-6">
           <div className="bg-neutral-900/30 border border-neutral-800 rounded-xl p-6">
             <h2 className="text-lg font-serif font-medium text-white mb-4">Net cash flow vs. baseline</h2>
-            <CashFlowChart months={months} flaggedShape={latest.shape} />
+            <CashFlowChart months={months} flaggedShape={latest.shape} currencySymbol={detail.currency_symbol} />
           </div>
 
           <div className="bg-neutral-900/30 border border-neutral-800 rounded-xl p-6">
@@ -100,6 +101,8 @@ export default function BorrowerDetail() {
               shape={latest.shape}
               recommendation={recommendation}
               installment={current_installment}
+              currencySymbol={detail.currency_symbol}
+              suggestedPayment={detail.suggested_payment}
             />
           </div>
         </div>

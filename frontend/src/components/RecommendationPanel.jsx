@@ -32,7 +32,14 @@ function computeAfter(bucket, shape, installment) {
   };
 }
 
-export default function RecommendationPanel({ bucket, shape, recommendation, installment }) {
+export default function RecommendationPanel({
+  bucket,
+  shape,
+  recommendation,
+  installment,
+  currencySymbol = "₹",
+  suggestedPayment,
+}) {
   const after = computeAfter(bucket, shape, installment);
   const changed = after.installment !== installment || after.dueOffsetDays !== 0 || after.graceInstallments > 0;
   const delta = installment ? Math.round((1 - after.installment / installment) * 100) : 0;
@@ -47,12 +54,12 @@ export default function RecommendationPanel({ bucket, shape, recommendation, ins
           <div className="grid grid-cols-2 gap-4 border-y border-neutral-800 py-5">
             <div>
               <div className="text-xs font-mono text-neutral-500 mb-1">Current installment</div>
-              <div className="font-serif text-2xl text-neutral-400">₹{installment.toLocaleString()}</div>
+              <div className="font-serif text-2xl text-neutral-400">{currencySymbol}{installment.toLocaleString()}</div>
               <div className="text-xs text-neutral-500 mt-1">standard due date</div>
             </div>
             <div>
               <div className="text-xs font-mono text-neutral-500 mb-1">Revised installment</div>
-              <div className="font-serif text-2xl text-amber-400">₹{after.installment.toLocaleString()}</div>
+              <div className="font-serif text-2xl text-amber-400">{currencySymbol}{after.installment.toLocaleString()}</div>
               <div className="text-xs text-neutral-500 mt-1">
                 {[
                   after.graceInstallments > 0 && `${after.graceInstallments} grace installment first`,
@@ -70,8 +77,8 @@ export default function RecommendationPanel({ bucket, shape, recommendation, ins
         </div>
       ) : (
         <p className="text-sm text-neutral-500">
-          Repayment schedule is unchanged. Installment stays at ₹{installment.toLocaleString()} on the standard due
-          date.
+          Repayment schedule is unchanged. Installment stays at {currencySymbol}{installment.toLocaleString()} on the
+          standard due date.
         </p>
       )}
     </div>
