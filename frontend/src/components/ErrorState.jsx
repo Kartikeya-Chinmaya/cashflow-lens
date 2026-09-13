@@ -1,15 +1,11 @@
 export default function ErrorState({ message, onRetry }) {
   return (
-    <div
-      className="border px-4 py-4"
-      style={{ borderColor: "var(--color-oxide)", boxShadow: "0 0 20px var(--color-oxide-wash)" }}
-    >
-      <p style={{ color: "var(--color-oxide)" }}>{message}</p>
+    <div className="border border-rose-900/50 bg-rose-950/20 rounded-xl px-4 py-4">
+      <p className="text-sm text-rose-400">{message}</p>
       {onRetry && (
         <button
           onClick={onRetry}
-          className="text-sm mt-3 px-4 py-2 font-medium"
-          style={{ background: "var(--color-oxide)", color: "var(--color-paper)" }}
+          className="text-xs mt-3 px-4 py-2 rounded-md font-medium bg-rose-900/60 hover:bg-rose-900 border border-rose-800 text-rose-200 transition-colors"
         >
           Reload the ledger
         </button>

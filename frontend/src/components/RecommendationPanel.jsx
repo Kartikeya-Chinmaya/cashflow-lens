@@ -39,62 +39,40 @@ export default function RecommendationPanel({ bucket, shape, recommendation, ins
 
   return (
     <div>
-      <h2 className="text-xl mb-3" style={{ fontFamily: "var(--font-serif)" }}>
-        Recommended repayment adjustment
-      </h2>
-      <p className="mb-5" style={{ color: "var(--color-ink)" }}>
-        {recommendation}
-      </p>
+      <h2 className="text-xl font-serif font-medium text-white mb-3">Recommended repayment adjustment</h2>
+      <p className="text-sm text-neutral-400 mb-5">{recommendation}</p>
 
       {changed ? (
-        <div style={{ maxWidth: 420 }}>
-          <Row label="Current installment" value={`₹${installment.toLocaleString()}`} note="standard due date" />
-          <Row
-            label="Revised installment"
-            value={`₹${after.installment.toLocaleString()}`}
-            note={[
-              after.graceInstallments > 0 && `${after.graceInstallments} grace installment first`,
-              after.dueOffsetDays > 0 ? `due date shifted ${after.dueOffsetDays} days` : null,
-            ]
-              .filter(Boolean)
-              .join(", ") || "same due date"}
-            final
-          />
-          <p className="text-sm mt-3" style={{ fontFamily: "var(--font-serif)", fontStyle: "italic", opacity: 0.75 }}>
+        <div>
+          <div className="grid grid-cols-2 gap-4 border-y border-neutral-800 py-5">
+            <div>
+              <div className="text-xs font-mono text-neutral-500 mb-1">Current installment</div>
+              <div className="font-serif text-2xl text-neutral-400">₹{installment.toLocaleString()}</div>
+              <div className="text-xs text-neutral-500 mt-1">standard due date</div>
+            </div>
+            <div>
+              <div className="text-xs font-mono text-neutral-500 mb-1">Revised installment</div>
+              <div className="font-serif text-2xl text-amber-400">₹{after.installment.toLocaleString()}</div>
+              <div className="text-xs text-neutral-500 mt-1">
+                {[
+                  after.graceInstallments > 0 && `${after.graceInstallments} grace installment first`,
+                  after.dueOffsetDays > 0 ? `due date shifted ${after.dueOffsetDays} days` : null,
+                ]
+                  .filter(Boolean)
+                  .join(", ") || "same due date"}
+              </div>
+            </div>
+          </div>
+          <p className="text-sm font-serif italic text-neutral-400 mt-4">
             {delta > 0 ? `${delta}% reduction. ` : ""}
             {after.tenureNote}.
           </p>
         </div>
       ) : (
-        <p style={{ color: "var(--color-ink)", opacity: 0.6 }}>
-          Repayment schedule is unchanged. Installment stays at ₹{installment.toLocaleString()} on the standard due date.
+        <p className="text-sm text-neutral-500">
+          Repayment schedule is unchanged. Installment stays at ₹{installment.toLocaleString()} on the standard due
+          date.
         </p>
-      )}
-    </div>
-  );
-}
-
-function Row({ label, value, note, final: isFinal = false }) {
-  return (
-    <div className={isFinal ? "rule-double pb-2 mb-1" : "pb-2 mb-2"} style={{ borderColor: "var(--color-ink)" }}>
-      <div className="flex items-baseline">
-        <span style={{ color: "var(--color-ink)", opacity: 0.75 }}>{label}</span>
-        <span className="leader" />
-        <span
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontWeight: isFinal ? 600 : 400,
-            fontSize: isFinal ? "1.15rem" : "1rem",
-            textShadow: isFinal ? "0 0 14px color-mix(in srgb, var(--color-caution) 75%, transparent)" : "none",
-          }}
-        >
-          {value}
-        </span>
-      </div>
-      {note && (
-        <div className="text-xs mt-0.5" style={{ opacity: 0.55 }}>
-          {note}
-        </div>
       )}
     </div>
   );
