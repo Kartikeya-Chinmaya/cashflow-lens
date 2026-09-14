@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 import numpy as np
 
@@ -6,7 +8,11 @@ import numpy as np
 # LOAD DATA
 # =========================================================
 
-df = pd.read_csv("data/borrowers.csv")
+# Resolved relative to this file, not the process's working directory,
+# so this loads correctly whether run locally (uvicorn from this folder)
+# or from Vercel's serverless function (different cwd).
+_DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "borrowers.csv")
+df = pd.read_csv(_DATA_PATH)
 CURRENCY_SYMBOLS = {
     "INR": "₹",
     "USD": "$",

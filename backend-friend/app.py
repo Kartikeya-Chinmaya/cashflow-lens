@@ -9,6 +9,17 @@ from fastapi.middleware.cors import CORSMiddleware
 from pipeline import analyze_borrower,df
 from llm_explainer import explain_borrower
 
+# In-memory cache so repeated dashboard/detail loads for the same
+# borrower don't re-call Groq every time; refresh-explanation bypasses
+# this deliberately.
+_explanation_cache = {}
+
+
+def get_cached_explanation(borrower_id, result):
+    if borrower_id not in _explanation_cache:
+        _explanation_cache[borrower_id] = explain_borrower(result)
+    return _explanation_cache[borrower_id]
+
 
 # =========================================================
 # RESPONSE MODEL
@@ -278,7 +289,7 @@ def get_borrower_detail(borrower_id: str):
 
         "current_installment": current_installment,
 
-        "ai_explanation": explain_borrower(result)
+        "ai_explanation": get_cached_explanation(borrower_id, result)
     }# =========================================================
 # FRONTEND: REFRESH AI EXPLANATION
 # =========================================================
@@ -295,6 +306,7 @@ def refresh_explanation(borrower_id: str):
         )
 
     explanation = explain_borrower(result)
+    _explanation_cache[borrower_id] = explanation
 
     return {
         "ai_explanation": explanation
