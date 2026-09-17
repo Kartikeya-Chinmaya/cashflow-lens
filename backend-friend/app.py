@@ -69,15 +69,43 @@ app.add_middleware(
 
 BORROWERS = {
     "B001": {
-        "name": "Borrower B001",
+        "name": "Ramesh Gupta",
         "archetype": "Stable income profile"
     },
     "B002": {
-        "name": "Borrower B002",
+        "name": "Fatima Sheikh",
         "archetype": "Seasonal income profile"
     },
     "B003": {
-        "name": "Borrower B003",
+        "name": "Vikram Rao",
+        "archetype": "Deteriorating income profile"
+    },
+    "B004": {
+        "name": "Priya Nair",
+        "archetype": "Stable income profile"
+    },
+    "B005": {
+        "name": "Arjun Mehta",
+        "archetype": "Stable income profile"
+    },
+    "B006": {
+        "name": "Deepika Joshi",
+        "archetype": "Seasonal income profile"
+    },
+    "B007": {
+        "name": "Ravi Kumar",
+        "archetype": "Seasonal income profile"
+    },
+    "B008": {
+        "name": "Meera Iyer",
+        "archetype": "Seasonal income profile"
+    },
+    "B009": {
+        "name": "Sunita Yadav",
+        "archetype": "Deteriorating income profile"
+    },
+    "B010": {
+        "name": "Karan Malhotra",
         "archetype": "Deteriorating income profile"
     }
 }
